@@ -5,19 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>体型管理</title>
 <style>
-:root{--bg:#f6f7f9;--card:#fff;--tx:#1d2330;--sub:#667085;--line:#e3e6ec;--ac:#2f6fed;--ac2:#fff;--danger:#d92d20;
+:root{--bg:#f6f7f9;--card:#fff;--tx:#1d2330;--sub:#475467;--line:#e3e6ec;--ac:#2f6fed;--ac2:#fff;--danger:#d92d20;
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12151b;--card:#1b202a;--tx:#e8ebf2;--sub:#98a2b3;--line:#2a313f;--ac:#6b98ff;--ac2:#10131a;--danger:#f97066}}
-:root[data-theme="dark"]{--bg:#12151b;--card:#1b202a;--tx:#e8ebf2;--sub:#98a2b3;--line:#2a313f;--ac:#6b98ff;--ac2:#10131a;--danger:#f97066}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12151b;--card:#1b202a;--tx:#e8ebf2;--sub:#c4cbd8;--line:#2a313f;--ac:#6b98ff;--ac2:#10131a;--danger:#f97066}}
+:root[data-theme="dark"]{--bg:#12151b;--card:#1b202a;--tx:#e8ebf2;--sub:#c4cbd8;--line:#2a313f;--ac:#6b98ff;--ac2:#10131a;--danger:#f97066}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 -apple-system,"Hiragino Sans","Noto Sans JP",sans-serif}
+body{margin:0;background:var(--bg);color:var(--tx);font:17px/1.5 -apple-system,"Hiragino Sans","Noto Sans JP",sans-serif}
 main{max-width:640px;margin:0 auto;padding:16px}
 h1{font-size:20px;margin:4px 0 14px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:14px}
-h2{font-size:15px;margin:0 0 10px}
+h2{font-size:17px;margin:0 0 10px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-label{display:block;font-size:12px;color:var(--sub);margin-bottom:2px}
-input,select{width:100%;font:inherit;padding:9px 10px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--tx)}
+label{display:block;font-size:14px;color:var(--sub);margin-bottom:3px}
+input,select{width:100%;font:inherit;padding:10px 12px;border:1px solid var(--line);border-radius:9px;background:var(--bg);color:var(--tx)}
+.grid>*{min-width:0}
+input[type=date]{min-width:0;max-width:100%;min-height:46px;-webkit-appearance:none;appearance:none;text-align:left}
 .full{grid-column:1/-1}
 button{font:inherit;border:0;border-radius:10px;padding:10px 14px;background:var(--ac);color:var(--ac2);font-weight:600;cursor:pointer}
 button.ghost{background:transparent;color:var(--ac);border:1px solid var(--line)}
@@ -26,20 +28,20 @@ button.ed{background:transparent;color:var(--ac);padding:4px 8px;font-weight:400
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .latest{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
 .stat{background:var(--bg);border-radius:10px;padding:8px 10px}
-.stat b{display:block;font-size:18px}
-.stat span{font-size:11px;color:var(--sub)}
-.d{font-size:11px;display:block;margin-top:2px}.stat .up{color:var(--danger);font-weight:600}.stat .down{color:#12a150;font-weight:600}
+.stat b{display:block;font-size:20px}
+.stat span{font-size:13px;color:var(--sub)}
+.d{font-size:13px;display:block;margin-top:2px}.stat .up{color:var(--danger);font-weight:600}.stat .down{color:#12a150;font-weight:600}
 .scroll{overflow-x:auto}
-table{border-collapse:collapse;width:100%;font-size:13px;white-space:nowrap}
+table{border-collapse:collapse;width:100%;font-size:15px;white-space:nowrap}
 th,td{padding:7px 8px;border-bottom:1px solid var(--line);text-align:right}
 th:first-child,td:first-child{text-align:left}
 th{color:var(--sub);font-weight:500}
 svg{width:100%;height:auto;display:block}
-.muted{color:var(--sub);font-size:13px}
+.muted{color:var(--sub);font-size:14px}
 .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
-.cal .h{text-align:center;font-size:11px;color:var(--sub)}
-.cal .c{min-height:48px;border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:3px 2px;font-size:12px;text-align:center;cursor:pointer}
-.cal .c i{display:block;font-style:normal;font-size:10px;color:var(--ac);min-height:14px}
+.cal .h{text-align:center;font-size:13px;color:var(--sub)}
+.cal .c{min-height:58px;border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:3px 2px;font-size:15px;text-align:center;cursor:pointer}
+.cal .c i{display:block;font-style:normal;font-size:12px;color:var(--ac);min-height:14px}
 .cal .c.has{border-color:var(--ac)}
 .cal .c.today{outline:2px solid var(--ac);outline-offset:-1px}
 .cal .c.sel{background:var(--ac);color:var(--ac2)}
@@ -50,6 +52,7 @@ textarea{width:100%;min-height:70px;font:12px monospace;padding:8px;border:1px s
 <body>
 <main>
 <h1>体型管理</h1>
+<p class="muted" id="syncState" style="margin:-8px 0 12px"></p>
 
 <div class="card">
 <h2 id="formTitle">記録する</h2>
@@ -83,8 +86,8 @@ textarea{width:100%;min-height:70px;font:12px monospace;padding:8px;border:1px s
 
 <div class="card">
 <h2>バックアップ</h2>
-<p class="muted" style="margin-top:0">データはこの端末のブラウザ内に保存されます。機種変更や履歴削除に備えて、コピーして保管してください。</p>
-<div class="row" style="margin-bottom:8px"><button class="ghost" id="exp">データをコピー</button><button class="ghost" id="imp">下の内容を読み込む</button></div>
+<p class="muted" style="margin-top:0">データはこの端末に保存され、クラウドが使える場合はクラウドにも保存されます（一番上の表示で確認できます）。念のため、ときどきコピーして保管してください。</p>
+<div class="row" style="margin-bottom:8px"><button class="ghost" id="exp">データをコピー</button><button class="ghost" id="imp">下の内容を読み込む</button><button class="ghost" id="clr">書き出した内容を消す</button></div>
 <textarea id="box" placeholder="ここに貼り付けて「読み込む」"></textarea>
 </div>
 </main>
@@ -94,7 +97,7 @@ let FIELDS=[["weight","体重","kg"],["waist","ウエスト","cm"],["navel","ヘ
 const KEY="bodyTracker.v1";
 let data=[];
 function load(){try{const r=localStorage.getItem(KEY);data=r?JSON.parse(r):[]}catch(e){data=[]}try{const f=localStorage.getItem(KEY+".fields");if(f){const a=JSON.parse(f);if(Array.isArray(a))FIELDS=a}}catch(e){}}
-function persist(){try{localStorage.setItem(KEY,JSON.stringify(data));localStorage.setItem(KEY+".fields",JSON.stringify(FIELDS))}catch(e){document.getElementById("msg").textContent="保存できませんでした。バックアップ機能を使ってください。"}}
+function persist(){schedulePush();try{localStorage.setItem(KEY,JSON.stringify(data));localStorage.setItem(KEY+".fields",JSON.stringify(FIELDS))}catch(e){document.getElementById("msg").textContent="保存できませんでした。バックアップ機能を使ってください。"}}
 const $=id=>document.getElementById(id);
 function today(){const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
 function sorted(){return data.slice().sort((a,b)=>a.date<b.date?-1:1)}
@@ -106,7 +109,7 @@ function save(){
   let n=0;
   FIELDS.forEach(([k])=>{const v=parseFloat($(k).value);if(!isNaN(v)){rec[k]=v;n++}});
   if(!n&&Object.keys(rec).length===1){data=data.filter(r=>r!==rec);$("msg").textContent="数値を1つ以上入れてください。";return}
-  persist();$("msg").textContent=date+" を保存しました。";
+  rec.u=Date.now();persist();$("msg").textContent=date+" を保存しました。";
   FIELDS.forEach(([k])=>$(k).value="");$("formTitle").textContent="記録する";render();
 }
 let calY,calM,selDate=null;
@@ -148,6 +151,70 @@ function renderDay(){
   $("dEdit").onclick=()=>edit(selDate);
   $("dDel").onclick=()=>twoTap($("dDel"),()=>del(selDate));
 }
+let cloud=null,uid=null,lastSync={},pushQ=Promise.resolve(),pushTimer=null;
+function ls(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function setSync(t){const e=$("syncState");if(e)e.textContent=t}
+function cleanFields(a){return a.filter(f=>Array.isArray(f)&&/^[a-z0-9]+$/i.test(f[0])).map(f=>[f[0],clean(f[1]),clean(f[2])||"cm"]).filter(f=>f[1])}
+function cleanRecs(a){
+  return a.filter(r=>r&&typeof r.date==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(r.date)).map(r=>{
+    const o={date:r.date};if(typeof r.u==="number")o.u=r.u;
+    Object.keys(r).forEach(k=>{if(k!=="date"&&k!=="u"&&typeof r[k]==="number"&&isFinite(r[k]))o[k]=r[k]});
+    return o;
+  });
+}
+function parts(){
+  const o={settings:{fields:FIELDS.map(([k,n,u])=>({k,n,u}))}};
+  data.forEach(r=>{const y="y"+r.date.slice(0,4);(o[y]=o[y]||{records:[]}).records.push(r)});
+  return o;
+}
+function schedulePush(){
+  if(!cloud)return;
+  try{localStorage.setItem(KEY+".dirty","1")}catch(e){}
+  setSync("クラウドに保存中…");
+  clearTimeout(pushTimer);
+  pushTimer=setTimeout(()=>{pushQ=pushQ.then(push)},700);
+}
+async function push(){
+  if(!cloud)return;
+  const col=cloud.collection("data/users/"+uid),p=parts();
+  try{
+    for(const k of Object.keys(p)){const s=JSON.stringify(p[k]);if(lastSync[k]!==s){await col.doc(k).set(p[k]);lastSync[k]=s}}
+    for(const k of Object.keys(lastSync)){if(!(k in p)){await col.doc(k).delete();delete lastSync[k]}}
+    try{localStorage.removeItem(KEY+".dirty");localStorage.setItem(KEY+".synced","1")}catch(e){}
+    setSync("クラウドに保存済み");
+  }catch(e){setSync("クラウドに保存できませんでした（この端末には保存済み）")}
+}
+async function initCloud(){
+  if(!window.claude||!claude.use){setSync("この端末のみに保存されています");return}
+  try{
+    const user=await claude.use("user"),db=await claude.use("db");
+    const id=user?await user.id():null;
+    if(!db||!id){setSync("この端末のみに保存されています（クラウドは使えません）");return}
+    uid=id;setSync("クラウドと同期中…");
+    const snap=await db.collection("data/users/"+uid).get();
+    const cd={};snap.docs.forEach(d=>{cd[d.id]=d.data()});
+    let cRecs=[];
+    Object.keys(cd).forEach(k=>{if(/^y\d{4}$/.test(k)&&cd[k]&&Array.isArray(cd[k].records))cRecs=cRecs.concat(cleanRecs(cd[k].records))});
+    const sf=cd.settings&&Array.isArray(cd.settings.fields)?cd.settings.fields:null;
+    const cF=sf?cleanFields(sf.filter(f=>f&&typeof f==="object").map(f=>[f.k,f.n,f.u])):[];
+    const hasCloud=cRecs.length>0||cF.length>0;
+    if(hasCloud){
+      if(!ls(KEY+".synced")||ls(KEY+".dirty")){
+        const m={};data.forEach(r=>{m[r.date]=r});
+        cRecs.forEach(r=>{const o=m[r.date];if(!o||(r.u||0)>=(o.u||0))m[r.date]=r});
+        data=Object.values(m);
+        if(cF.length){const ks=new Set(cF.map(f=>f[0]));FIELDS=cF.concat(FIELDS.filter(f=>!ks.has(f[0])))}
+      }else{
+        data=cRecs;if(cF.length)FIELDS=cF;
+      }
+      try{localStorage.setItem(KEY,JSON.stringify(data));localStorage.setItem(KEY+".fields",JSON.stringify(FIELDS))}catch(e){}
+      Object.keys(cd).forEach(k=>{lastSync[k]=JSON.stringify(cd[k])});
+      buildForm();renderFields();fillMetric();render();
+    }
+    cloud=db;
+    pushQ=pushQ.then(push);
+  }catch(e){setSync("この端末のみに保存されています（クラウドと同期できませんでした）")}
+}
 function twoTap(btn,fn){
   if(btn.dataset.arm){fn();return}
   btn.dataset.arm="1";const t=btn.textContent;btn.textContent="本当に削除";btn.style.fontWeight="700";
@@ -181,7 +248,7 @@ function delField(k){
   const f=FIELDS.find(x=>x[0]===k);
   if(!f)return;
   FIELDS=FIELDS.filter(x=>x[0]!==k);
-  data.forEach(r=>{delete r[k]});data=data.filter(r=>Object.keys(r).length>1);
+  data.forEach(r=>{delete r[k]});data=data.filter(r=>Object.keys(r).some(x=>x!=="date"&&x!=="u"));
   $("fieldMsg").textContent=f[1]+" を削除しました。";fieldsChanged();
 }
 function edit(date){
@@ -267,8 +334,10 @@ $("exp").onclick=async()=>{const t=JSON.stringify({fields:FIELDS,data});$("box")
 $("imp").onclick=()=>{try{const o=JSON.parse($("box").value);const a=Array.isArray(o)?o:o.data;if(!Array.isArray(a))throw 0;
   if(!Array.isArray(o)&&Array.isArray(o.fields)){const fs=o.fields.filter(f=>Array.isArray(f)&&/^[a-z0-9]+$/i.test(f[0])).map(f=>[f[0],clean(f[1]),clean(f[2])||"cm"]).filter(f=>f[1]);if(fs.length)FIELDS=fs}
   data=a.filter(r=>r&&r.date);fieldsChanged();$("msg").textContent="読み込みました。"}catch(e){$("msg").textContent="読み込めませんでした。形式を確認してください。"}};
+$("clr").onclick=()=>{$("box").value=""};
 $("date").value=today();
 load();initCal();applyView();buildForm();renderFields();fillMetric();render();
+initCloud();
 </script>
 </body>
 </html>
