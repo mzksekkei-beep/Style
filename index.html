@@ -105,14 +105,16 @@ function lastVal(k,beforeIdx){const s=sorted();for(let i=(beforeIdx===undefined?
 
 function save(){
   const date=$("date").value;if(!date){$("msg").textContent="日付を入れてください。";return}
-  let rec=data.find(r=>r.date===date);if(!rec){rec={date};data.push(rec)}
+  let rec=data.find(r=>r.date===date);
+  const oldRec=editingDate&&editingDate!==date?data.find(r=>r.date===editingDate):null;
+  if(!rec){rec=oldRec?Object.assign({},oldRec,{date}):{date};data.push(rec)}
   let n=0;
   FIELDS.forEach(([k])=>{const v=parseFloat($(k).value);if(!isNaN(v)){rec[k]=v;n++}});
   if(!n&&Object.keys(rec).length===1){data=data.filter(r=>r!==rec);$("msg").textContent="数値を1つ以上入れてください。";return}
-  rec.u=Date.now();persist();$("msg").textContent=date+" を保存しました。";
+  if(oldRec)data=data.filter(r=>r!==oldRec);editingDate=null;rec.u=Date.now();persist();$("msg").textContent=date+" を保存しました。";
   FIELDS.forEach(([k])=>$(k).value="");$("formTitle").textContent="記録する";render();
 }
-let calY,calM,selDate=null;
+let editingDate=null,calY,calM,selDate=null;
 function initCal(){const d=new Date();calY=d.getFullYear();calM=d.getMonth();selDate=today()}
 function applyView(){const c=$("view").value==="cal";$("calWrap").style.display=c?"":"none";$("tblWrap").style.display=c?"none":""}
 function monthsOf(y){
@@ -144,7 +146,7 @@ function renderDay(){
   const r=data.find(x=>x.date===selDate);
   if(!r){
     el.innerHTML=`<p class="muted">${selDate} は記録がありません。</p><button class="ghost" id="addDay">この日に記録する</button>`;
-    $("addDay").onclick=()=>{$("date").value=selDate;$("formTitle").textContent=selDate+" を入力中";window.scrollTo({top:0,behavior:"smooth"})};
+    $("addDay").onclick=()=>{editingDate=null;$("date").value=selDate;$("formTitle").textContent=selDate+" を入力中";window.scrollTo({top:0,behavior:"smooth"})};
     return;
   }
   el.innerHTML=`<div style="margin-top:10px"><b>${selDate}</b><div class="latest" style="margin:8px 0">${FIELDS.map(([k,n,u])=>`<div class="stat"><span>${n}</span><b>${r[k]==null?"–":r[k].toFixed(1)+" "+u}</b></div>`).join("")}</div><div class="row"><button class="ghost" id="dEdit">編集</button><button class="del" id="dDel">削除</button></div></div>`;
@@ -253,7 +255,7 @@ function delField(k){
 }
 function edit(date){
   const r=data.find(x=>x.date===date);if(!r)return;
-  $("date").value=date;
+  editingDate=date;$("date").value=date;
   FIELDS.forEach(([k])=>{$(k).value=r[k]==null?"":r[k]});
   $("formTitle").textContent=date+" を編集中";
   $("msg").textContent="数値を直して「保存」を押してください。";
