@@ -73,7 +73,7 @@ textarea{width:100%;min-height:70px;font:12px monospace;padding:8px;border:1px s
 <div class="card">
 <div class="row" style="justify-content:space-between;margin-bottom:8px"><h2 style="margin:0">履歴</h2><select id="view" style="width:auto"><option value="cal">カレンダー</option><option value="tbl">表</option></select></div>
 <div id="calWrap"><div class="row" style="justify-content:space-between;margin-bottom:6px"><button class="ghost" id="prevM">‹</button><b id="calTitle" style="cursor:pointer"></b><button class="ghost" id="nextM">›</button></div><div class="row" id="ymPick" style="display:none;margin-bottom:6px;justify-content:center"><select id="ySel" style="width:auto"></select><select id="mSel" style="width:auto"></select></div><div class="cal" id="cal"></div><div id="dayInfo"></div></div>
-<div class="scroll" id="tblWrap"><table id="table"></table></div>
+<div id="tblWrap"><div class="row" style="margin-bottom:8px"><select id="tYear" style="width:auto"></select></div><div class="scroll"><table id="table"></table></div></div>
 </div>
 
 <div class="card">
@@ -284,10 +284,13 @@ function renderLatest(){
   });
 }
 function renderTable(){
-  const s=sorted().reverse();
+  const ys=[...new Set(data.map(r=>r.date.slice(0,4)))].sort().reverse();
+  const ts=$("tYear");let cy=ts.value;if(!ys.includes(cy))cy=ys[0]||"";
+  ts.innerHTML=ys.map(y=>`<option value="${y}">${y}年</option>`).join("");ts.value=cy;
+  const s=sorted().reverse().filter(r=>r.date.startsWith(cy));
   if(!s.length){$("table").innerHTML='<tr><td class="muted">まだ記録がありません</td></tr>';return}
   let h="<tr><th>日付</th>"+FIELDS.map(f=>`<th>${f[1]}</th>`).join("")+"<th></th></tr>";
-  s.forEach(r=>{h+=`<tr><td>${r.date.replace(/-/g,"/")}</td>`+FIELDS.map(([k])=>`<td>${r[k]==null?"–":r[k].toFixed(1)}</td>`).join("")+`<td><button class="ed" data-e="${r.date}">編集</button><button class="del" data-d="${r.date}">削除</button></td></tr>`});
+  s.forEach(r=>{h+=`<tr><td>${r.date.slice(5).replace("-","/")}</td>`+FIELDS.map(([k])=>`<td>${r[k]==null?"–":r[k].toFixed(1)}</td>`).join("")+`<td><button class="ed" data-e="${r.date}">編集</button><button class="del" data-d="${r.date}">削除</button></td></tr>`});
   $("table").innerHTML=h;
   $("table").querySelectorAll(".del").forEach(b=>b.onclick=()=>twoTap(b,()=>del(b.dataset.d)));
   $("table").querySelectorAll(".ed").forEach(b=>b.onclick=()=>edit(b.dataset.e));
@@ -328,6 +331,7 @@ function render(){fillPeriod();renderLatest();renderChart();renderTable();render
 $("save").onclick=save;
 $("addField").onclick=addField;
 $("view").onchange=applyView;
+$("tYear").onchange=renderTable;
 $("calTitle").onclick=()=>{const p=$("ymPick");p.style.display=p.style.display==="none"?"flex":"none"};
 $("ySel").onchange=()=>{const y=+$("ySel").value,a=monthsOf(y);calY=y;if(a.length&&!a.includes(calM))calM=a[a.length-1];renderCal()};
 $("mSel").onchange=()=>{calM=+$("mSel").value;renderCal()};
